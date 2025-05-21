@@ -17,11 +17,9 @@ template: doc
     max: -Infinity,
   }
   setInterval(async () => {
-    var url = ''
+    var url = '/backend'
     if (window.location.hostname === 'localhost') {
-      url = 'http://localhost:3000'
-    } else if (window.location.hostname === 'aliajs-demo-frontend-production.rotat.io') {
-      url = '/backend'
+       url = 'http://localhost:3000'
     }
     const prev = Date.now()
     const result = await fetch(url + '/demo-95d8e9f5')
