@@ -19,7 +19,9 @@ template: doc
   setInterval(async () => {
     var url = ''
     if (window.location.hostname === 'localhost') {
-       url = 'http://localhost:3000'
+      url = 'http://localhost:3000'
+    } else if (window.location.hostname === 'aliajs-demo-frontend-production.rotat.io') {
+      url = '/backend'
     }
     const prev = Date.now()
     const result = await fetch(url + '/demo-95d8e9f5')
