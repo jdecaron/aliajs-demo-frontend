@@ -3,37 +3,58 @@ title: AliaJS Demo
 description: AliaJS Demo
 template: doc
 ---
+import { LinkButton } from '@astrojs/starlight/components';
 
 ## Version A
+<br/>
+### Hash <span style="color:var(--sl-color-accent)"></span><input id="hash_input" type="text" />
+### Count <span style="color:var(--sl-color-accent)" id="count_value"></span>
+<LinkButton id="start" href="#">
+  Start
+</LinkButton>
+<LinkButton id="stop" href="#">
+  Stop
+</LinkButton>
+<br/>
 ### Max <span style="color:var(--sl-color-accent)" id="max_value"></span>
 ### 50th <span style="color:var(--sl-color-accent)" id="50th_value"></span>
 ### Min <span style="color:var(--sl-color-accent)" id="min_value"></span>
 
 <script>{`
+  window.intervalDelay = 250
   counter = 0;
   const delays = {
     all: [],
     min: Infinity,
     max: -Infinity,
   }
-  setInterval(async () => {
-    var url = '/backend'
-    if (window.location.hostname === 'localhost') {
-       url = 'http://localhost:3000'
+  document.getElementById('start').onclick = () => {
+    clearInterval(window.interval)
+    window.counter = 0
+    window.interval = setInterval(async () => {
+      counter = counter + 1
+      var url = '/backend'
+      if (window.location.hostname === 'localhost') {
+        url = 'http://localhost:3000'
+      }
+      const prev = Date.now()
+      const result = await fetch(url + '/demo-95d8e9f5?counter=' + window.counter + '&hash=' + document.getElementById('hash_input').value)
+      const total = Date.now() - prev
+      delays.all.push(total)
+      delays.all.sort()
+      document.getElementById('50th_value').innerText = delays.all[Math.floor(delays.all.length / 2)] + 'ms'
+      if (total > delays.max) {
+        delays.max = total
+        document.getElementById('max_value').innerText = total + 'ms'
+      }
+      if (total < delays.min) {
+        delays.min = total
+        document.getElementById('min_value').innerText = total + 'ms'
+      }
+      document.getElementById('count_value').innerText = counter
+    }, window.intervalDelay)
+    document.getElementById('stop').onclick = () => {
+      clearInterval(window.interval)
     }
-    const prev = Date.now()
-    const result = await fetch(url + '/demo-95d8e9f5')
-    const total = Date.now() - prev
-    delays.all.push(total)
-    delays.all.sort()
-    document.getElementById('50th_value').innerText = delays.all[Math.floor(delays.all.length / 2)] + 'ms'
-    if (total > delays.max) {
-      delays.max = total
-      document.getElementById('max_value').innerText = total + 'ms'
-    }
-    if (total < delays.min) {
-      delays.min = total
-      document.getElementById('min_value').innerText = total + 'ms'
-    }
-  }, 1000)
+  }
 `}</script>
