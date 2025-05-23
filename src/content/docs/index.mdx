@@ -38,7 +38,7 @@ import { LinkButton } from '@astrojs/starlight/components';
         url = 'http://localhost:3000'
       }
       const prev = Date.now()
-      const result = await fetch(url + '/demo-95d8e9f5?counter=' + window.counter + '&hash=' + document.getElementById('hash_input').value)
+      const result = await fetch(url + '/counter?counter=' + window.counter + '&hash=' + document.getElementById('hash_input').value)
       const total = Date.now() - prev
       delays.all.push(total)
       delays.all.sort()
