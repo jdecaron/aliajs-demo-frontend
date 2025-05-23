@@ -33,7 +33,7 @@ import { LinkButton } from '@astrojs/starlight/components';
     window.counter = 0
     window.interval = setInterval(async () => {
       counter = counter + 1
-      var url = '/backend'
+      var url = '/api/v0'
       if (window.location.hostname === 'localhost') {
         url = 'http://localhost:3000'
       }
