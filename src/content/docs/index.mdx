@@ -7,7 +7,8 @@ import { LinkButton } from '@astrojs/starlight/components';
 
 ## Version B
 <br/>
-### Hash <span style="color:var(--sl-color-accent)"></span><input id="hash_input" type="text" />
+### Hash <span style="color:var(--sl-color-accent)"></span> <input id="hash_input" type="text" />
+### Delay (milliseconds)<span style="color:var(--sl-color-accent)"></span> <input id="delay_input" type="text" default="20" />
 ### Count <span style="color:var(--sl-color-accent)" id="count_value"></span>
 <LinkButton id="start" href="#">
   Start
@@ -31,6 +32,7 @@ import { LinkButton } from '@astrojs/starlight/components';
   document.getElementById('start').onclick = () => {
     clearInterval(window.interval)
     window.counter = 0
+    window.intervalDelay = document.getElementById('delay_input').value
     window.interval = setInterval(async () => {
       counter = counter + 1
       var url = '/api/v0'
